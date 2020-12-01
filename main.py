@@ -1,7 +1,7 @@
 from pyquery import PyQuery
 from PyQt5 import QtWidgets, uic,QtGui,QtCore
 from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtWidgets import QFontDialog,QFileDialog
+from PyQt5.QtWidgets import QFontDialog,QFileDialog,QMessageBox
 import os,sys
 
 class Ui(QtWidgets.QMainWindow):
@@ -22,17 +22,11 @@ class Ui(QtWidgets.QMainWindow):
         self.actionNew.triggered.connect(self.New_File)
         self.actionExit.triggered.connect(self.close)
         self.actionStatus_bar.triggered.connect(self.Show_Hide_Sbar)
-        self.actionZoom.triggered.connect(self.textEdit.zoomIn)
-        self.actionZoom_0.triggered.connect(self.textEdit.zoomOut)
-
+        self.actionHelp.triggered.connect(self.Show_Help)
+        self.actionAbout_software.triggered.connect(self.Show_About)
+        
         self.textEdit.cursorPositionChanged.connect(self.Status_Bar_Handler)
         self.textEdit.textChanged.connect(self.Text_Changed)
-
-    def wheelEvent(self,event):
-        if event.angleDelta().y() > 0:
-            self.textEdit.zoomIn()
-        else:
-            self.textEdit.zoomOut()
 
     def Text_Changed(self):
         if self.filename != "":
@@ -59,6 +53,18 @@ class Ui(QtWidgets.QMainWindow):
                                                                                          cur3=x))
         except Exception as ex:
             print(ex)
+
+    def Show_About(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("About")
+        msg.setText("Hello! This script was writen by Victor Vyshkovsky in 2020, just for fun!\nPython3.8 + Qt5 Designer!")
+        msg.exec()
+        
+    def Show_Help(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("HELP")
+        msg.setText("Using this editor you can edit simple txt\ini\inf text files. Files loaded in UTF-8.\nCTRL+Z\C\V actualy working, thx Qt!")
+        msg.exec()
 
     def Show_Hide_Sbar(self, state):
         if self.statusbar.isVisible():
